@@ -1,14 +1,14 @@
 image_id,game_id,name,release_date,rating,genres,player_perspectives
-scc9gr,1156,Tomb Raider II,880070400,80.27000786598154,"['Shooter', 'Platform', 'Puzzle', 'Adventure']",['Third person']
-scc9gs,1156,Tomb Raider II,880070400,80.27000786598154,"['Shooter', 'Platform', 'Puzzle', 'Adventure']",['Third person']
-scc9gt,1156,Tomb Raider II,880070400,80.27000786598154,"['Shooter', 'Platform', 'Puzzle', 'Adventure']",['Third person']
-scc9gq,1156,Tomb Raider II,880070400,80.27000786598154,"['Shooter', 'Platform', 'Puzzle', 'Adventure']",['Third person']
-scc9gp,1156,Tomb Raider II,880070400,80.27000786598154,"['Shooter', 'Platform', 'Puzzle', 'Adventure']",['Third person']
-jfcrdcguoxfuldo5blr3,966,Resident Evil 3: Nemesis,937958400,80.65521355357836,"['Shooter', 'Puzzle', 'Adventure']",['Third person']
-v5taxpsxbengllwhep6n,966,Resident Evil 3: Nemesis,937958400,80.65521355357836,"['Shooter', 'Puzzle', 'Adventure']",['Third person']
-ngjabdx9cx5zpwi8p3ea,966,Resident Evil 3: Nemesis,937958400,80.65521355357836,"['Shooter', 'Puzzle', 'Adventure']",['Third person']
-mfy5tjimkowdsjmkx4tj,966,Resident Evil 3: Nemesis,937958400,80.65521355357836,"['Shooter', 'Puzzle', 'Adventure']",['Third person']
-rvjb70g68lwwehqnqpa9,966,Resident Evil 3: Nemesis,937958400,80.65521355357836,"['Shooter', 'Puzzle', 'Adventure']",['Third person']
-wiwmyubr1753px6p5emi,966,Resident Evil 3: Nemesis,937958400,80.65521355357836,"['Shooter', 'Puzzle', 'Adventure']",['Third person']
-dac3qjahaxymbnuh4j18,966,Resident Evil 3: Nemesis,937958400,80.65521355357836,"['Shooter', 'Puzzle', 'Adventure']",['Third person']
-ptgwkx3xebyhs2lqkg0a,966,Resident Evil 3: Nemesis,937958400,80.65521355357836,"['Shooter', 'Puzzle', 'Adventure']",['Third person']
+scc9gr,1156,Tomb Raider II,880070400,80.27000786598154,"Shooter, Platform, Puzzle, Adventure",Third person
+scc9gs,1156,Tomb Raider II,880070400,80.27000786598154,"Shooter, Platform, Puzzle, Adventure",Third person
+scc9gt,1156,Tomb Raider II,880070400,80.27000786598154,"Shooter, Platform, Puzzle, Adventure",Third person
+scc9gq,1156,Tomb Raider II,880070400,80.27000786598154,"Shooter, Platform, Puzzle, Adventure",Third person
+scc9gp,1156,Tomb Raider II,880070400,80.27000786598154,"Shooter, Platform, Puzzle, Adventure",Third person
+jfcrdcguoxfuldo5blr3,966,Resident Evil 3: Nemesis,937958400,80.65521355357836,"Shooter, Puzzle, Adventure",Third person
+v5taxpsxbengllwhep6n,966,Resident Evil 3: Nemesis,937958400,80.65521355357836,"Shooter, Puzzle, Adventure",Third person
+ngjabdx9cx5zpwi8p3ea,966,Resident Evil 3: Nemesis,937958400,80.65521355357836,,Third person
+mfy5tjimkowdsjmkx4tj,966,Resident Evil 3: Nemesis,937958400,80.65521355357836,"Shooter, Puzzle, Adventure",Third person
+rvjb70g68lwwehqnqpa9,966,Resident Evil 3: Nemesis,937958400,80.65521355357836,"Shooter, Puzzle, Adventure",
+wiwmyubr1753px6p5emi,966,Resident Evil 3: Nemesis,937958400,80.65521355357836,"Shooter, Puzzle, Adventure",Third person
+dac3qjahaxymbnuh4j18,966,Resident Evil 3: Nemesis,937958400,80.65521355357836,"Shooter, Puzzle, Adventure",Third person
+ptgwkx3xebyhs2lqkg0a,966,Resident Evil 3: Nemesis,937958400,80.65521355357836,"Shooter, Puzzle, Adventure",Third person
