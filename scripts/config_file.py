@@ -8,9 +8,11 @@ class Config:
     PROJECT_PATH = Path(env_values["PROJECT_PATH"])
     _IMAGES_FOLDER = env_values["IMAGES_FOLDER"]
     _DATA_FOLDER = env_values["DATA_FOLDER"]
+    _VIDEOS_FOLDER = env_values["VIDEOS_FOLDER"]
 
     IMAGES_PATH = PROJECT_PATH / _IMAGES_FOLDER
     DATA_PATH = PROJECT_PATH / _DATA_FOLDER
+    VIDEOS_PATH = PROJECT_PATH / _VIDEOS_FOLDER
 
     @classmethod
     def as_dict(cls):
