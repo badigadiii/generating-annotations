@@ -34,7 +34,6 @@ for i, row in videos_to_download.iterrows():
 
     command = [
         "yt-dlp",
-        "-r", "1500K", # REMOVE IF DON'T NEEDED
         "-f", "bestvideo[height=1080][tbr>=5000][tbr<=10000] / bestvideo[height=1080]",
         "-o", str(config.VIDEOS_FOLDER / f"{game}.%(ext)s"),
         "--downloader", "ffmpeg",
@@ -44,8 +43,8 @@ for i, row in videos_to_download.iterrows():
 
     try:
         subprocess.run(command, check=True)
-        print(f"✅ Готово [{i+1}/{len(videos_to_download)}]: {game}\n")
-        logging.info(f"✅ Готово [{i+1}/{len(videos_to_download)}]: {game}")
+        print(f"✅ Готово [{i+1}/{len(df)}]: {game}\n")
+        logging.info(f"✅ Готово [{i+1}/{len(df)}]: {game}")
     except subprocess.CalledProcessError:
         print(f"❌ Ошибка при скачивании: {game}\n")
         logging.info(f"❌ Ошибка при скачивании: {game}\n")
