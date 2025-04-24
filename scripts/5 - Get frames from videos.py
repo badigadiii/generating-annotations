@@ -41,8 +41,8 @@ for i, video in enumerate(videos_to_frames):
 
     try:
         subprocess.run(command, check=True)
-        print(f"✅ Готово [{i+1}/{len(videos)}]: {video}\n")
-        logging.info(f"✅ Готово [{i+1}/{len(videos)}]: {video}")
+        print(f"✅ Готово [{(i + 1) + len(existing_frame_folders)}/{len(videos)}]: {video}\n")
+        logging.info(f"✅ Готово [{(i + 1) + len(existing_frame_folders)}/{len(videos)}]: {video}")
     except subprocess.CalledProcessError:
         print(f"❌ Ошибка при фреймировании: {video}\n")
         logging.info(f"❌ Ошибка при фреймировании: {video}\n")
