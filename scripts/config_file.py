@@ -10,6 +10,8 @@ class Config:
     _DATA_FOLDER = Path(env_values["DATA_FOLDER"])
     _LOGS_FOLDER = Path(env_values["LOGS_FOLDER"])
     VIDEOS_FOLDER = Path(env_values["VIDEOS_FOLDER"])
+    
+    HUG_API_TOKEN = env_values["HUG_API_TOKEN"]
 
     IMAGES_PATH = PROJECT_PATH / _IMAGES_FOLDER
     DATA_PATH = PROJECT_PATH / _DATA_FOLDER

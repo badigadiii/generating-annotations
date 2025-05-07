@@ -19,7 +19,13 @@ csv_path = config.DATA_PATH / "videos.csv" # "videos_small.csv"
 df = pd.read_csv(csv_path)
 
 def sanitize_filename(name):
-    return "".join(c if c.isalnum() or c in " -_" else "_" for c in name).strip()
+    special = "\\/:*?\"<>|+"
+    new_name = "".join(c if c not in special else "_" for c in name)
+
+    if new_name[-1] in " .":
+        new_name = new_name[:-1]
+
+    return new_name
 
 df['game'] = df['game'].apply(sanitize_filename)
 downloaded = list(map(lambda name: name[:name.rfind('.')].strip(), os.listdir(config.VIDEOS_FOLDER)))
