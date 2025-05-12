@@ -9,7 +9,9 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("-i", "--input", required=False, help="Folder with videos to extract frames")
 parser.add_argument("-o", "--output", required=False, help="Folder to store videos frames")
+parser.add_argument("-f", "--frame_rate", required=False, type=float)
 parser.add_argument("-s", "--scene_difference", required=False, help="From 0 ot 1 number", type=float)
+
 
 args = parser.parse_args()
 
@@ -30,7 +32,9 @@ input_folder = Path(input_folder)
 output_folder = config.IMAGES_PATH / "videos-screenshots" if not args.output else args.output
 output_folder = Path(output_folder)
 os.makedirs(output_folder, exist_ok=True)
+
 scene_difference = 0.2 if not args.scene_difference else args.scene_difference
+frame_rate = 1 if not args.frame_rate else args.frame_rate
 
 
 videos = os.listdir(input_folder)
@@ -49,7 +53,7 @@ for i, video in enumerate(videos_to_frames):
     command = [
         "ffmpeg",
         "-i", str(input_folder / video),
-        "-vf", f"fps=1,blackframe=90:32,mpdecimate",
+        "-vf", f"fps={frame_rate},blackframe=90:32,mpdecimate,select='gt(scene,{scene_difference})",
         "-fps_mode", "vfr",
         f"{output_folder}/{video}/frame_%04d.png"
     ]
