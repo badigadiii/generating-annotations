@@ -3,6 +3,18 @@ import subprocess
 import os
 import logging
 from config_file import config
+from pathlib import Path
+
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-i", "--input", required=False, help=".csv file with videos to download")
+parser.add_argument("-o", "--output", required=False, help="Folder to store downloaded videos")
+parser.add_argument("-d", "--duration", required=False, default="3600", help="Duration off video to download in seconds")
+parser.add_argument("-s", "--start", required=False, default="00:10:00", help="Start video to download in HH:MM:SS format")
+
+args = parser.parse_args()
+
 
 log_file = config.LOGS_PATH / "download.log"
 log_file.parent.mkdir(parents=True, exist_ok=True)  # На всякий случай создаём директорию
@@ -15,8 +27,11 @@ logging.basicConfig(
     ]
 )
 
-csv_path = config.DATA_PATH / "videos.csv" # "videos_small.csv"
-df = pd.read_csv(csv_path)
+input_file = config.DATA_PATH / "videos.csv" if not args.input else args.input
+output_folder = config.VIDEOS_FOLDER if not args.output else args.output
+output_folder = Path(output_folder)
+start = "00:10:00" if not args.start else args.start
+duration = "3600" if not args.duration else args.duration
 
 def sanitize_filename(name):
     special = "\\/:*?\"<>|+"
@@ -27,8 +42,9 @@ def sanitize_filename(name):
 
     return new_name
 
+df = pd.read_csv(input_file)
 df['game'] = df['game'].apply(sanitize_filename)
-downloaded = list(map(lambda name: name[:name.rfind('.')].strip(), os.listdir(config.VIDEOS_FOLDER)))
+downloaded = list(map(lambda name: name[:name.rfind('.')].strip(), os.listdir(output_folder)))
 videos_to_download = df[df['game'].apply(lambda game: game not in downloaded)]
 
 for i, row in videos_to_download.iterrows():
@@ -41,9 +57,9 @@ for i, row in videos_to_download.iterrows():
     command = [
         "yt-dlp",
         "-f", "bestvideo[height=1080][tbr>=5000][tbr<=10000] / bestvideo[height=1080]",
-        "-o", str(config.VIDEOS_FOLDER / f"{game}.%(ext)s"),
+        "-o", str(output_folder / f"{game}.%(ext)s"),
         "--downloader", "ffmpeg",
-        "--downloader-args", "ffmpeg:-ss 00:10:00 -t 3600",
+        "--downloader-args", f"ffmpeg:-ss {start} -t {duration}",
         url
     ]
 
