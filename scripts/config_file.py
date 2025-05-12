@@ -16,6 +16,8 @@ class Config:
     IMAGES_PATH = PROJECT_PATH / _IMAGES_FOLDER
     DATA_PATH = PROJECT_PATH / _DATA_FOLDER
     LOGS_PATH = PROJECT_PATH / _LOGS_FOLDER
+    DATASET_NAME = "retro-games-gameplay-frames-30k-512p"
+    DATASET_PATH = IMAGES_PATH / "retro-games-gameplay-frames-30k-512p" / "dataset"
 
     @classmethod
     def as_dict(cls):
