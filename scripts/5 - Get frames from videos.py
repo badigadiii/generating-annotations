@@ -4,6 +4,16 @@ from pathlib import Path
 import os
 from config_file import config
 
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-i", "--input", required=False, help="Folder with videos to extract frames")
+parser.add_argument("-o", "--output", required=False, help="Folder to store videos frames")
+parser.add_argument("-s", "--scene_difference", required=False, help="From 0 ot 1 number", type=float)
+
+args = parser.parse_args()
+
+
 log_file = config.LOGS_PATH / "framing_videos.log"
 log_file.parent.mkdir(parents=True, exist_ok=True)  # На всякий случай создаём директорию
 logging.basicConfig(
@@ -15,12 +25,17 @@ logging.basicConfig(
     ]
 )
 
-frames_folder = config.IMAGES_PATH / "videos-screenshots"
+input_folder = config.VIDEOS_FOLDER if not args.input else args.input
+input_folder = Path(input_folder)
+output_folder = config.IMAGES_PATH / "videos-screenshots" if not args.output else args.output
+output_folder = Path(output_folder)
+os.makedirs(output_folder, exist_ok=True)
+scene_difference = 0.2 if not args.scene_difference else args.scene_difference
 
-videos = os.listdir(config.VIDEOS_FOLDER)
-existing_frame_folders = os.listdir(frames_folder)
 
-videos_to_frames = list(set(videos).difference(set(existing_frame_folders)))
+videos = os.listdir(input_folder)
+framed_videos = os.listdir(output_folder)
+videos_to_frames = list(set(videos).difference(set(framed_videos)))
 
 
 # ffmpeg -i "F:\Videos\Hitman_ Blood Money.mp4" -vf "select='gt(scene,0.1)',showinfo" -vsync vfr "images/videos-screenshots/Hitman_ Blood Money/frame_%04d.png"
@@ -29,20 +44,20 @@ for i, video in enumerate(videos_to_frames):
     print(f"📥 Фреймирование: {video}")
     logging.info(f"📥 Фреймирование: {video}")
 
-    os.makedirs(frames_folder / video, exist_ok=True)
+    os.makedirs(output_folder / video, exist_ok=True)
 
     command = [
         "ffmpeg",
-        "-i", f"{config.VIDEOS_FOLDER}/{video}",
-        "-vf", "select='gt(scene,0.2)',showinfo",
+        "-i", str(input_folder / video),
+        "-vf", f"fps=1,blackframe=90:32,mpdecimate",
         "-fps_mode", "vfr",
-        f"{frames_folder}/{video}/frame_%04d.png"
+        f"{output_folder}/{video}/frame_%04d.png"
     ]
 
     try:
         subprocess.run(command, check=True)
-        print(f"✅ Готово [{(i + 1) + len(existing_frame_folders)}/{len(videos)}]: {video}\n")
-        logging.info(f"✅ Готово [{(i + 1) + len(existing_frame_folders)}/{len(videos)}]: {video}")
+        print(f"✅ Готово [{(i + 1) + len(framed_videos)}/{len(videos)}]: {video}\n")
+        logging.info(f"✅ Готово [{(i + 1) + len(framed_videos)}/{len(videos)}]: {video}")
     except subprocess.CalledProcessError:
         print(f"❌ Ошибка при фреймировании: {video}\n")
         logging.info(f"❌ Ошибка при фреймировании: {video}\n")

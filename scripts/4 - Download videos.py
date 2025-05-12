@@ -17,7 +17,7 @@ args = parser.parse_args()
 
 
 log_file = config.LOGS_PATH / "download.log"
-log_file.parent.mkdir(parents=True, exist_ok=True)  # На всякий случай создаём директорию
+log_file.parent.mkdir(parents=True, exist_ok=True)
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -38,9 +38,10 @@ def sanitize_filename(name):
     new_name = "".join(c if c not in special else "_" for c in name)
 
     if new_name[-1] in " .":
-        new_name = new_name[:-1]
+        new_name = new_name[:-1] + "_"
 
     return new_name
+
 
 df = pd.read_csv(input_file)
 df['game'] = df['game'].apply(sanitize_filename)
@@ -65,8 +66,8 @@ for i, row in videos_to_download.iterrows():
 
     try:
         subprocess.run(command, check=True)
-        print(f"✅ Готово [{i+1}/{len(df)}]: {game}\n")
+        print(f"✅ Готово [{i+1}/{len(df)}]: {game}")
         logging.info(f"✅ Готово [{i+1}/{len(df)}]: {game}")
     except subprocess.CalledProcessError:
-        print(f"❌ Ошибка при скачивании: {game}\n")
-        logging.info(f"❌ Ошибка при скачивании: {game}\n")
+        print(f"❌ Ошибка при скачивании: {game}")
+        logging.info(f"❌ Ошибка при скачивании: {game}")
