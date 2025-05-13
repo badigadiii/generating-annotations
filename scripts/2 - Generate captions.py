@@ -17,8 +17,8 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--model_id", "-m", required=False)
-parser.add_argument("--input", "-i", required=False)
-parser.add_argument("--output", "-o", required=False)
+parser.add_argument("--input", "-i", required=False, help="Input folder with images folders")
+parser.add_argument("--output", "-o", required=False, help="Output .txt with captions")
 parser.add_argument("--prompt", "-p", required=False)
 
 args = parser.parse_args()

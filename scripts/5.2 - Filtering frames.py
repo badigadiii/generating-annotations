@@ -14,7 +14,7 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("-i", "--input", required=False, help="Folder which stores folders with images")
 parser.add_argument("-o", "--output", required=False, help="Folder to store folders with filtered frames")
-parser.add_argument("-v", "--varience", required=False, help="File to save info about laplasian varience for each frame")
+parser.add_argument("-v", "--varience_file", required=False, help="File to save info about laplasian varience for each frame")
 parser.add_argument("-t", "--threshold", type=float, required=False, help="Threshold for filtering frame by laplasian varience")
 
 args = parser.parse_args()
@@ -22,7 +22,7 @@ args = parser.parse_args()
 # Input
 input_folder = config.IMAGES_PATH / "transformed-frames" / "dataset" if not args.input else args.input
 output_folder = config.IMAGES_PATH / "retro-games-gameplay-frames-30k-512p" / "dataset" if not args.output else args.output
-varience_file = config.DATA_PATH / "varience.json" if not args.varience else args.varience
+varience_file = config.DATA_PATH / "varience.json" if not args.varience_file else args.varience_file
 threshold = 100 if not args.threshold else args.threshold
 
 input_folder = Path(input_folder)
@@ -56,12 +56,13 @@ games = os.listdir(input_folder)
 # Calculate laplasian varience
 laplasian_var = {}
 
+
 if not os.path.exists(varience_file):
     for game_index, game in enumerate(games):
+        print(f"[Game {game_index + 1} / {len(games)}] {game}")
+        
         frames = os.listdir(input_folder / game)
         laplasian_var[game] = {}
-
-        print(f"[Game {game_index + 1} / {len(games)}]")
 
         for frame_index, frame in tqdm(enumerate(frames), total=len(frames), desc="Calculating laplasian"):
             img = Image.open(input_folder / game / frame)
@@ -77,10 +78,9 @@ with open(varience_file, "r", encoding="utf-8") as f:
     laplasian_var = json.load(f)
 
 for game_index, game in enumerate(games):
-    frames = os.listdir(input_folder / game)
+    print(f"[Game {game_index + 1} / {len(games)}] {game}")
 
-    print(f"[Game {game_index + 1} / {len(games)}]")
-    
+    frames = os.listdir(input_folder / game)
     os.makedirs(output_folder / game, exist_ok=True)
 
     for frame_index, frame in tqdm(enumerate(frames), total=len(frames), desc="Filtering"):
