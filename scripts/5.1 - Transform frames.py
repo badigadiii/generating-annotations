@@ -31,6 +31,8 @@ transform = transforms.Compose([
 ])
 
 for game_index, game_name in enumerate(folders):
+    if len(game_name[game_name.rfind(".") + 1:]) != 0: # Change it later. Check if game_name has .ext
+        game_name = game_name[:game_name.rfind(".")] # Get rid of .ext in game_name
     input_folder = screenshot_folders / game_name
     output_dir = output_folder / game_name
     os.makedirs(output_dir, exist_ok=True)
