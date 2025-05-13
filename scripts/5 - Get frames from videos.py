@@ -39,14 +39,19 @@ frame_rate = 1 if not args.frame_rate else args.frame_rate
 
 videos = os.listdir(input_folder)
 framed_videos = os.listdir(output_folder)
-videos_to_frames = list(set(videos).difference(set(framed_videos)))
+# videos_to_frames = list(set(videos).difference(set(framed_videos)))
 
 
 # ffmpeg -i "F:\Videos\Hitman_ Blood Money.mp4" -vf "select='gt(scene,0.1)',showinfo" -vsync vfr "images/videos-screenshots/Hitman_ Blood Money/frame_%04d.png"
 
-for i, video in enumerate(videos_to_frames):
+for i, video in enumerate(videos):
     print(f"📥 Фреймирование: {video}")
     logging.info(f"📥 Фреймирование: {video}")
+
+    if os.path.exists(output_folder / video):
+        print(f"✅ Уже Готово [{(i + 1)}/{len(videos)}]: {video}\n")
+        logging.info(f"✅ Уже Готово [{(i + 1)}/{len(videos)}]: {video}")
+        continue
 
     os.makedirs(output_folder / video, exist_ok=True)
 
@@ -60,8 +65,8 @@ for i, video in enumerate(videos_to_frames):
 
     try:
         subprocess.run(command, check=True)
-        print(f"✅ Готово [{(i + 1) + len(framed_videos)}/{len(videos)}]: {video}\n")
-        logging.info(f"✅ Готово [{(i + 1) + len(framed_videos)}/{len(videos)}]: {video}")
+        print(f"✅ Готово [{(i + 1)}/{len(videos)}]: {video}\n")
+        logging.info(f"✅ Готово [{(i + 1)}/{len(videos)}]: {video}")
     except subprocess.CalledProcessError:
         print(f"❌ Ошибка при фреймировании: {video}\n")
         logging.info(f"❌ Ошибка при фреймировании: {video}\n")

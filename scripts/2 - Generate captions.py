@@ -8,6 +8,7 @@ from transformers import (
     PaliGemmaForConditionalGeneration,
 )
 import torch
+from pathlib import Path
 
 from config_file import config
 
@@ -16,15 +17,19 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--model_id", "-m", required=False)
+parser.add_argument("--input", "-i", required=False)
 parser.add_argument("--output", "-o", required=False)
 parser.add_argument("--prompt", "-p", required=False)
 
 args = parser.parse_args()
 
 # Constants
-images_folder = config.IMAGES_PATH / "retro-games-gameplay-frames-30k-512p" / "dataset"
+images_folder = config.IMAGES_PATH / "retro-games-gameplay-frames-30k-512p" / "dataset" if not args.input else args.input
 output_file = config.DATA_PATH / "captions.txt" if not args.output else args.output
 prompt = "A screenshot from a video game shows" if not args.prompt else args.prompt
+
+images_folder = Path(images_folder)
+output_file = Path(output_file)
 
 # 🔄 Load model
 model_id = "Salesforce/blip-image-captioning-base" if not args.model_id else args.model_id
