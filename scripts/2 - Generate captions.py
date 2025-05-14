@@ -9,7 +9,6 @@ from transformers import (
 )
 import torch
 from pathlib import Path
-from accelerate import init_empty_weights, infer_auto_device_map
 
 from config_file import config
 
@@ -94,20 +93,33 @@ def generate_caption_paligemma(image_path: str, prompt: str):
         return decoded
 
 
+from PIL import Image, UnidentifiedImageError
+
 def generate_batch_captions(image_paths: list[str], text: str) -> list[str]:
+    valid_images = []
+
+    for path in image_paths:
+        try:
+            img = Image.open(path).convert("RGB")
+            valid_images.append(img)
+        except (OSError, UnidentifiedImageError) as e:
+            print(f"⚠️ Проблема с изображением {path}: {e}")
+
+    if not valid_images:
+        print("❌ Нет валидных изображений для генерации описаний.")
+        return []
+
     try:
-        images = [Image.open(image_path).convert("RGB") for image_path in image_paths]
-        inputs = processor(images=images,
-                           text=[text] * len(image_paths),
+        inputs = processor(images=valid_images,
+                           text=[text] * len(valid_images),
                            return_tensors="pt").to(device)
         outputs = model.generate(**inputs)
-        caption = processor.batch_decode(outputs, skip_special_tokens=True)
-
-        return caption
-
+        captions = processor.batch_decode(outputs, skip_special_tokens=True)
+        return captions
     except Exception as e:
-        print(f"Ошибка при обработке {image_paths}: {e}")
-        return ""
+        print(f"Ошибка при обработке батча: {e}")
+        return []
+
 
 
 generate_caption = None
@@ -121,29 +133,27 @@ def chunks(lst, n):
     for i in range(0, len(lst), n):
         yield lst[i : i + n]
 
-generated_captions = []
+captioned_frames = []
 
 if os.path.exists(output_file):
     with open(output_file, "r") as f:
         lines = f.readlines()
-    generated_captions = list(map(lambda line: line.split('\t')[0], lines))
+    captioned_frames = set([Path(line.split('\t')[0]) for line in lines])
 
 for game in tqdm(os.listdir(images_folder), desc="Генерация аннотаций"):
     # Batching images
     frames_folder = images_folder / game
+
     frames = list(frames_folder.iterdir())
+    not_captioned_frames = list(set(frames) - captioned_frames)
 
     with tqdm(total=len(frames), desc=f"Генерация аннотаций для {game}", position=1) as pbar:
-        pbar.update(len(generated_captions))
+        pbar.update(len(frames) - len(not_captioned_frames)) # Number of already captioned frames
 
-        for frames_chunk in chunks(frames, batch_size):
-            frames_chunk = [frame for frame in frames_chunk if str(frame) not in generated_captions]
-
-            if not frames_chunk:
-                continue
+        for frames_chunk in chunks(not_captioned_frames, batch_size):
 
             captions = generate_batch_captions(frames_chunk, prompt)
-            
+
             with open(output_file, "a") as f:
                 for frame, caption in zip(frames_chunk, captions):
                     f.write(f"{images_folder / game / frame}\t{caption}\n")
