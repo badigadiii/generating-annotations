@@ -2,8 +2,10 @@ import os
 import torch
 from diffusers import StableDiffusionPipeline, DDIMScheduler, UNet2DConditionModel
 from PIL import Image
+from pathlib import Path
 
 from config_file import config
+
 
 class CustomStableDiffusion:
     def __init__(self, model_id="runwayml/stable-diffusion-v1-5", unet_path=None, device=None, torch_dtype=torch.float16, cache_dir="./models"):
@@ -40,6 +42,12 @@ class CustomStableDiffusion:
             return image
 
 
-from pathlib import Path
+checkpoints_dir = Path("./checkpoints")
 
-checkpoints_dir = Path('checkpoints')
+generator = CustomStableDiffusion(
+    model_id="runwayml/stable-diffusion-v1-5",
+    unet_path=checkpoints_dir / "unet_epoch_80.pt"
+)
+
+img = generator.generate("Girl with big sword in armor", num_inference_steps=5)
+img.save("image.png")

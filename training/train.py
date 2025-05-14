@@ -8,25 +8,64 @@ from pathlib import Path
 from tqdm.auto import tqdm
 
 from diffusers import (
-    StableDiffusionPipeline,
     UNet2DConditionModel,
     AutoencoderKL,
     DDIMScheduler,
 )
 from transformers import CLIPTextModel, CLIPTokenizer
 
-# TODO: Add argparse
+
+# ---------- Args ----------
+import argparse
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--image_dir", "-i", required=False, help="Folder with image folders")
+parser.add_argument("--data_path", "-data", required=False, help=".csv file with captions")
+parser.add_argument("--checkpoint_dir", "-c", required=False)
+parser.add_argument("--num_epochs", "-n", type=int, required=False)
+parser.add_argument("--checkpoint_frequency", "-freq", type=int, required=False)
+parser.add_argument("--unet_weights", "-w", type=int, required=False, help="File with unet weights")
+parser.add_argument("--batch_size", "-b", type=int, required=False)
+parser.add_argument("--learning_rate", "-lr", type=float, required=False)
+parser.add_argument("--log_path", "-log", required=False, help="Path to training log file")
+
+
+args = parser.parse_args()
+
+# ---------- Logging ----------
+import logging
+
+log_path = args.log_path if args.log_path else "training.log"
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s | %(levelname)s | %(message)s",
+    handlers=[
+        logging.FileHandler(log_path, mode="a", encoding="utf-8"),
+        logging.StreamHandler()
+    ]
+)
+
+logger = logging.getLogger(__name__)
+logger.info("Логгер инициализирован.")
+
 
 # --------------- Settings ---------------
-image_dir = Path("../images") / "core-games"
-data_path = Path("../data") / "core_annotations.csv"
-checkpoint_dir = Path("checkpoints")
+image_dir = Path("../images") / "core-games" if not args.image_dir else args.image_dir
+data_path = Path("../data") / "core_annotations.csv" if not args.data_path else args.data_path
+checkpoint_dir = Path("./checkpoints") if not args.checkpoint_dir else args.checkpoint_dir
+
+image_dir = Path(image_dir)
+data_path = Path(data_path)
+checkpoint_dir = Path(checkpoint_dir)
+
 checkpoint_dir.mkdir(exist_ok=True)
 
-batch_size = 1
-learning_rate = 5e-6
-num_epochs = 5
-checkpoint_frequency = 2
+batch_size = 1 if not args.batch_size else args.batch_size
+learning_rate = 5e-6 if not args.learning_rate else args.learning_rate
+num_epochs = 5 if not args.num_epochs else args.num_epochs
+checkpoint_frequency = 2 if not args.checkpoint_frequency else args.checkpoint_frequency
 
 log_file = Path("training_loss_log.csv")
 
@@ -77,7 +116,10 @@ tokenizer = CLIPTokenizer.from_pretrained(model_id, subfolder="tokenizer")
 text_encoder = CLIPTextModel.from_pretrained(model_id, subfolder="text_encoder")
 vae = AutoencoderKL.from_pretrained(model_id, subfolder="vae")
 unet = UNet2DConditionModel.from_pretrained(model_id, subfolder="unet")
-# unet.load_state_dict(torch.load("../unet_final.pt", map_location=device))
+
+if args.unet_weights:
+    unet.load_state_dict(torch.load(args.unet_weights, map_location=device))
+
 scheduler = DDIMScheduler.from_pretrained(model_id, subfolder="scheduler")
 
 # Перемещение моделей на GPU, если доступно
@@ -135,6 +177,8 @@ for epoch in range(1, num_epochs + 1):
     avg_loss = sum(epoch_losses) / len(epoch_losses)
     loss_log.append({"epoch": epoch, "avg_loss": avg_loss})
     print(f"Epoch {epoch}/{num_epochs} | Average Loss: {avg_loss:.6f}")
+    logger.info(f"Epoch {epoch}/{num_epochs} | Average Loss: {avg_loss:.6f}")
+
 
     # Сохранение чекпоинта по частоте
     if epoch % checkpoint_frequency == 0:
@@ -142,13 +186,18 @@ for epoch in range(1, num_epochs + 1):
         checkpoint_path = checkpoint_dir / f"unet_epoch_{epoch}.pt"
         torch.save(unet.state_dict(), checkpoint_path)
         print(f"Чекпоинт сохранен: {checkpoint_path}")
+        logger.info(f"Чекпоинт сохранен: {checkpoint_path}")
+
 
 # Сохранение финальной модели
 final_model_path = checkpoint_dir / "unet_final.pt"
 torch.save(unet.state_dict(), final_model_path)
 print(f"Финальная модель сохранена: {final_model_path}")
+logger.info(f"Финальная модель сохранена: {final_model_path}")
+
 
 # Сохранение логов в CSV для последующего анализа
 df_log = pd.DataFrame(loss_log)
 df_log.to_csv(log_file, index=False)
 print(f"Логи обучения сохранены в: {log_file}")
+logger.info(f"Логи обучения сохранены в: {log_file}")
