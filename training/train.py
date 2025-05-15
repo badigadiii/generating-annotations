@@ -1,4 +1,22 @@
-import os
+# ---------- Args ----------
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--dataset_path", "-data", required=False, help="Dataset directory")
+parser.add_argument("--dataset_split", "-split", required=False, help="Split from dataset {train, test}")
+parser.add_argument("--checkpoint_dir", "-c", required=False)
+parser.add_argument("--num_epochs", "-n", type=int, required=False)
+parser.add_argument("--checkpoint_frequency", "-freq", type=int, required=False)
+parser.add_argument("--unet_weights", "-w", type=int, required=False, help="File with unet weights")
+parser.add_argument("--batch_size", "-b", type=int, required=False)
+parser.add_argument("--learning_rate", "-lr", type=float, required=False)
+parser.add_argument("--log_path", "-log", required=False, help="Path to training log file")
+parser.add_argument("--model_cache", "-m", required=False, help="Path to pretrained model cache")
+
+
+args = parser.parse_args()
+
+
 import torch
 import torchvision.transforms as transforms
 from torch.utils.data import Dataset, DataLoader
@@ -13,30 +31,14 @@ from diffusers import (
     DDIMScheduler,
 )
 from transformers import CLIPTextModel, CLIPTokenizer
+from datasets import load_dataset
 
-
-# ---------- Args ----------
-import argparse
-
-
-parser = argparse.ArgumentParser()
-parser.add_argument("--image_dir", "-i", required=False, help="Folder with image folders")
-parser.add_argument("--data_path", "-data", required=False, help=".csv file with captions")
-parser.add_argument("--checkpoint_dir", "-c", required=False)
-parser.add_argument("--num_epochs", "-n", type=int, required=False)
-parser.add_argument("--checkpoint_frequency", "-freq", type=int, required=False)
-parser.add_argument("--unet_weights", "-w", type=int, required=False, help="File with unet weights")
-parser.add_argument("--batch_size", "-b", type=int, required=False)
-parser.add_argument("--learning_rate", "-lr", type=float, required=False)
-parser.add_argument("--log_path", "-log", required=False, help="Path to training log file")
-
-
-args = parser.parse_args()
+from config_file import config
 
 # ---------- Logging ----------
 import logging
 
-log_path = args.log_path if args.log_path else "training.log"
+log_path = config.LOGS_PATH / "training_log.log" if not args.log_path else args.log_path
 
 logging.basicConfig(
     level=logging.INFO,
@@ -52,12 +54,12 @@ logger.info("Логгер инициализирован.")
 
 
 # --------------- Settings ---------------
-image_dir = Path("../images") / "core-games" if not args.image_dir else args.image_dir
-data_path = Path("../data") / "core_annotations.csv" if not args.data_path else args.data_path
+dataset_path = Path("./dataset") if not args.dataset_path else args.dataset_path
+dataset_split = "train" if not args.dataset_split else args.dataset_split
 checkpoint_dir = Path("./checkpoints") if not args.checkpoint_dir else args.checkpoint_dir
+cache_dir = "./models" if not args.model_cache else args.model_cache
 
-image_dir = Path(image_dir)
-data_path = Path(data_path)
+dataset_path = Path(dataset_path)
 checkpoint_dir = Path(checkpoint_dir)
 
 checkpoint_dir.mkdir(exist_ok=True)
@@ -71,23 +73,19 @@ log_file = Path("training_loss_log.csv")
 
 # --------------- Dataloader ---------------
 class CustomDataset(Dataset):
-    def __init__(self, image_dir: Path, data_path: Path, transform=None):
-        """
-        image_dir - директория с изображениями
-        data_path - путь к файлу с filename-annotations
-        transform - преобразования для изображений
-        """
-        self.image_dir = image_dir
-        self.data = pd.read_csv(data_path)
+    def __init__(self, dataset_path: Path, split: str, transform=None):
+        self.dataset_path = Path(dataset_path)
+        dataset = load_dataset(str(dataset_path))
+        self.dataset = dataset[split]
         self.transform = transform
 
     def __len__(self):
-        return len(self.data)
+        return len(self.dataset)
 
     def __getitem__(self, idx):
-        screenshot = self.data.iloc[idx]
-        filepath = self.image_dir / screenshot["filename"]  # 'filename'
-        prompt = screenshot["annotation"]
+        screenshot = self.dataset[idx]
+        filepath = self.dataset_path / screenshot["file_name"]
+        prompt = screenshot["caption"]
 
         image = Image.open(filepath).convert("RGB")
         if self.transform:
@@ -103,7 +101,7 @@ transform = transforms.Compose([
     transforms.Normalize([0.5], [0.5]),
 ])
 
-dataset = CustomDataset(image_dir=image_dir, data_path=data_path, transform=transform)
+dataset = CustomDataset(dataset_path=dataset_path, split="train", transform=transform)
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
 # --------------- Training ---------------
@@ -112,10 +110,10 @@ dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 model_id = "runwayml/stable-diffusion-v1-5"
-tokenizer = CLIPTokenizer.from_pretrained(model_id, subfolder="tokenizer")
-text_encoder = CLIPTextModel.from_pretrained(model_id, subfolder="text_encoder")
-vae = AutoencoderKL.from_pretrained(model_id, subfolder="vae")
-unet = UNet2DConditionModel.from_pretrained(model_id, subfolder="unet")
+tokenizer = CLIPTokenizer.from_pretrained(model_id, subfolder="tokenizer", cache_dir=cache_dir)
+text_encoder = CLIPTextModel.from_pretrained(model_id, subfolder="text_encoder", cache_dir=cache_dir)
+vae = AutoencoderKL.from_pretrained(model_id, subfolder="vae", cache_dir=cache_dir)
+unet = UNet2DConditionModel.from_pretrained(model_id, subfolder="unet", cache_dir=cache_dir)
 
 if args.unet_weights:
     unet.load_state_dict(torch.load(args.unet_weights, map_location=device))
