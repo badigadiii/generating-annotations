@@ -34,13 +34,15 @@ from diffusers import (
 from transformers import CLIPTextModel, CLIPTokenizer
 from datasets import load_dataset
 
+from dataset import RetroGamesHelper
 from config_file import config
 
 # ---------- Logging ----------
 import logging
 
 log_file = config.LOGS_PATH / "training_log.log" if not args.log_file else args.log_file
-os.makedirs(log_file, exist_ok=True)
+log_file = Path(log_file)
+os.makedirs(log_file.parent, exist_ok=True)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -73,18 +75,30 @@ checkpoint_frequency = 2 if not args.checkpoint_frequency else args.checkpoint_f
 
 # --------------- Dataloader ---------------
 class CustomDataset(Dataset):
-    def __init__(self, dataset_path: Path, split: str, transform=None):
+    def __init__(self, dataset_path: Path, dataset_split: str = "train", fold_index: int = None, k_folds: int = None, transform=None):
         self.dataset_path = Path(dataset_path)
         dataset = load_dataset(str(dataset_path))
-        self.dataset = dataset[split]
+        self.dataset = dataset[dataset_split]
+        self.retro_helper = RetroGamesHelper(dataset_path / dataset_split, dataset_path / f"{dataset_split}.csv")
+        self.validation_dataset = None
+
+        if fold_index is not None and k_folds is not None:
+            train, val = self.retro_helper.get_fold(fold_index, k_folds)
+            self.dataset = train
+            self.validation_dataset = val
+
         self.transform = transform
 
     def __len__(self):
         return len(self.dataset)
 
     def __getitem__(self, idx):
-        screenshot = self.dataset[idx]
-        filepath = self.dataset_path / screenshot["file_name"]
+
+        if isinstance(self.dataset, pd.core.frame.DataFrame):
+            screenshot = self.dataset.iloc[idx]
+        else:
+            screenshot = self.dataset[idx]
+        filepath = self.dataset_path / screenshot["file_name"].replace("\\", "/")
         prompt = screenshot["caption"]
 
         image = Image.open(filepath).convert("RGB")
