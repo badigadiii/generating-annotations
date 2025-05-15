@@ -111,7 +111,7 @@ class CustomDataset(Dataset):
 
         return {"pixel_values": image, "prompt": prompt}
 
-size = 512
+size = 128
 transform = transforms.Compose([
     transforms.Resize(size, interpolation=transforms.InterpolationMode.BICUBIC),
     transforms.CenterCrop(size),
@@ -122,7 +122,7 @@ transform = transforms.Compose([
 dataset = CustomDataset(dataset_path=dataset_path, dataset_split=dataset_split, transform=transform)
 
 
-if dataset.validation_dataset:
+if dataset.validation_dataset is not None:
     dataset.validation_dataset.to_csv(checkpoint_dir / "validation.csv", index=False)
 
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
