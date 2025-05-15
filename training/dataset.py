@@ -62,7 +62,7 @@ class RetroGamesHelper:
             for frame in self.get_frames(game):
                 yield frame
     
-    def get_fold(self, fold_index: int, k_folds: int):
+    def get_fold(self, fold_index: int, k_folds: int) -> tuple[pd.core.frame.DataFrame, pd.core.frame.DataFrame]:
         if not (0 <= fold_index < k_folds):
             raise ValueError(f"Wrong fold index: {fold_index}; 0 <= fold_index < {k_folds}")
         

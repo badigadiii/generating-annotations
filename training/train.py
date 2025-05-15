@@ -5,13 +5,15 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--dataset_path", "-data", required=False, help="Dataset directory")
 parser.add_argument("--dataset_split", "-split", required=False, help="Split from dataset {train, test}")
 parser.add_argument("--checkpoint_dir", "-c", required=False)
+parser.add_argument("--log_file", "-log", required=False, help="Path to training log file")
+parser.add_argument("--unet_weights", "-w", type=int, required=False, help="File with unet weights")
+parser.add_argument("--model_cache", "-m", required=False, help="Path to pretrained model cache")
+parser.add_argument("--batch_size", "-b", type=int, required=False)
 parser.add_argument("--num_epochs", "-n", type=int, required=False)
 parser.add_argument("--checkpoint_frequency", "-freq", type=int, required=False)
-parser.add_argument("--unet_weights", "-w", type=int, required=False, help="File with unet weights")
-parser.add_argument("--batch_size", "-b", type=int, required=False)
 parser.add_argument("--learning_rate", "-lr", type=float, required=False)
-parser.add_argument("--log_file", "-log", required=False, help="Path to training log file")
-parser.add_argument("--model_cache", "-m", required=False, help="Path to pretrained model cache")
+parser.add_argument("--k_folds", type=int, required=False)
+parser.add_argument("--fold_index", type=int, required=False)
 
 
 args = parser.parse_args()
@@ -72,6 +74,8 @@ batch_size = 1 if not args.batch_size else args.batch_size
 learning_rate = 5e-6 if not args.learning_rate else args.learning_rate
 num_epochs = 5 if not args.num_epochs else args.num_epochs
 checkpoint_frequency = 2 if not args.checkpoint_frequency else args.checkpoint_frequency
+k_folds = None if not args.k_folds else args.k_folds
+fold_index = None if not args.fold_index else args.fold_index
 
 # --------------- Dataloader ---------------
 class CustomDataset(Dataset):
@@ -80,11 +84,11 @@ class CustomDataset(Dataset):
         dataset = load_dataset(str(dataset_path))
         self.dataset = dataset[dataset_split]
         self.retro_helper = RetroGamesHelper(dataset_path / dataset_split, dataset_path / f"{dataset_split}.csv")
-        self.validation_dataset = None
+        self.validation_dataset: pd.core.frame.DataFrame = None
 
         if fold_index is not None and k_folds is not None:
             train, val = self.retro_helper.get_fold(fold_index, k_folds)
-            self.dataset = train
+            self.dataset:  = train
             self.validation_dataset = val
 
         self.transform = transform
@@ -116,6 +120,11 @@ transform = transforms.Compose([
 ])
 
 dataset = CustomDataset(dataset_path=dataset_path, split="train", transform=transform)
+
+
+if dataset.validation_dataset:
+    dataset.validation_dataset.to_csv(checkpoint_dir / "validation.csv", index=False)
+
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
 # --------------- Training ---------------
