@@ -10,13 +10,14 @@ parser.add_argument("--checkpoint_frequency", "-freq", type=int, required=False)
 parser.add_argument("--unet_weights", "-w", type=int, required=False, help="File with unet weights")
 parser.add_argument("--batch_size", "-b", type=int, required=False)
 parser.add_argument("--learning_rate", "-lr", type=float, required=False)
-parser.add_argument("--log_path", "-log", required=False, help="Path to training log file")
+parser.add_argument("--log_file", "-log", required=False, help="Path to training log file")
 parser.add_argument("--model_cache", "-m", required=False, help="Path to pretrained model cache")
 
 
 args = parser.parse_args()
 
 
+import os
 import torch
 import torchvision.transforms as transforms
 from torch.utils.data import Dataset, DataLoader
@@ -38,13 +39,14 @@ from config_file import config
 # ---------- Logging ----------
 import logging
 
-log_path = config.LOGS_PATH / "training_log.log" if not args.log_path else args.log_path
+log_file = config.LOGS_PATH / "training_log.log" if not args.log_file else args.log_file
+os.makedirs(log_file, exist_ok=True)
 
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s | %(levelname)s | %(message)s",
     handlers=[
-        logging.FileHandler(log_path, mode="a", encoding="utf-8"),
+        logging.FileHandler(log_file, mode="a", encoding="utf-8"),
         logging.StreamHandler()
     ]
 )
@@ -68,8 +70,6 @@ batch_size = 1 if not args.batch_size else args.batch_size
 learning_rate = 5e-6 if not args.learning_rate else args.learning_rate
 num_epochs = 5 if not args.num_epochs else args.num_epochs
 checkpoint_frequency = 2 if not args.checkpoint_frequency else args.checkpoint_frequency
-
-log_file = Path("training_loss_log.csv")
 
 # --------------- Dataloader ---------------
 class CustomDataset(Dataset):
