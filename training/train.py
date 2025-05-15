@@ -119,7 +119,7 @@ transform = transforms.Compose([
     transforms.Normalize([0.5], [0.5]),
 ])
 
-dataset = CustomDataset(dataset_path=dataset_path, dataset_split=dataset_split, transform=transform)
+dataset = CustomDataset(dataset_path=dataset_path, dataset_split=dataset_split, k_folds=k_folds, fold_index=fold_index, transform=transform)
 
 
 if dataset.validation_dataset is not None:
