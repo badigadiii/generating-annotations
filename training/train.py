@@ -74,8 +74,8 @@ batch_size = 1 if not args.batch_size else args.batch_size
 learning_rate = 5e-6 if not args.learning_rate else args.learning_rate
 num_epochs = 5 if not args.num_epochs else args.num_epochs
 checkpoint_frequency = 2 if not args.checkpoint_frequency else args.checkpoint_frequency
-k_folds = None if not args.k_folds else args.k_folds
-fold_index = None if not args.fold_index else args.fold_index
+k_folds = 5 if not args.k_folds else args.k_folds
+fold_index = 0 if not args.fold_index else args.fold_index
 
 # --------------- Dataloader ---------------
 class CustomDataset(Dataset):
@@ -120,7 +120,6 @@ transform = transforms.Compose([
 ])
 
 dataset = CustomDataset(dataset_path=dataset_path, dataset_split=dataset_split, k_folds=k_folds, fold_index=fold_index, transform=transform)
-
 
 if dataset.validation_dataset is not None:
     dataset.validation_dataset.to_csv(checkpoint_dir / "validation.csv", index=False)
@@ -203,7 +202,6 @@ for epoch in range(1, num_epochs + 1):
 
     # Сохранение чекпоинта по частоте
     if epoch % checkpoint_frequency == 0:
-        # TODO: Также сделать попеременное сохранения логов ошибок
         checkpoint_path = checkpoint_dir / f"unet_epoch_{epoch}.pt"
         torch.save(unet.state_dict(), checkpoint_path)
         print(f"Чекпоинт сохранен: {checkpoint_path}")
