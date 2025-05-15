@@ -88,7 +88,7 @@ class CustomDataset(Dataset):
 
         if fold_index is not None and k_folds is not None:
             train, val = self.retro_helper.get_fold(fold_index, k_folds)
-            self.dataset:  = train
+            self.dataset = train
             self.validation_dataset = val
 
         self.transform = transform
