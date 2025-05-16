@@ -5,6 +5,21 @@ from PIL import Image
 from pathlib import Path
 
 from config_file import config
+from dataset import RetroGamesHelper
+
+
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--unet_path", required=True)
+parser.add_argument("--images_dir", required=True)
+parser.add_argument("--dataset_path", required=True)
+parser.add_argument("--cache_dir", required=True)
+parser.add_argument("--num_inference_steps", "-n", type=int, default=2, required=False)
+parser.add_argument("--guidance_scale", "-g", type=float, default=7.5, required=False)
+
+
+args = parser.parse_args()
 
 
 class CustomStableDiffusion:
@@ -42,12 +57,26 @@ class CustomStableDiffusion:
             return image
 
 
-checkpoints_dir = Path("./checkpoints")
+unet_path = Path(args.unet_path)
+images_dir = Path(args.images_dir)
+dataset_path = Path(args.dataset_path)
 
-generator = CustomStableDiffusion(
-    model_id="runwayml/stable-diffusion-v1-5",
-    unet_path=checkpoints_dir / "unet_epoch_80.pt"
-)
+os.makedirs(images_dir, exist_ok=True)
 
-img = generator.generate("Girl with big sword in armor", num_inference_steps=5)
-img.save("image.png")
+retro_helper = RetroGamesHelper(dataset_path / "test", dataset_path / "test.csv")
+captions = retro_helper.get_captions()
+for i in range(len(captions)):
+    item = captions.iloc[i]
+    filename = Path(item['file_name'])
+    caption = item['caption']
+    os.makedirs(images_dir / filename.parent, exist_ok=True)
+
+    generator = CustomStableDiffusion(
+        model_id="runwayml/stable-diffusion-v1-5",
+        unet_path=unet_path,
+        cache_dir=args.cache_dir
+    )
+
+    img = generator.generate(caption, num_inference_steps=args.num_inference_steps)
+    img.save(images_dir / filename)
+    break

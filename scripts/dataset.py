@@ -73,8 +73,9 @@ class RetroGames:
 
 if __name__ == "__main__":
     dataset_path = config.DATASET_PATH
-    captions_path = dataset_path / "test_captions.txt"
+    captions_path = dataset_path / "test.csv"
 
     r = RetroGames(dataset_path / "test", captions_path)
     games = r.get_games()
+    print(games)
     frames = r.get_frames(games[0])
