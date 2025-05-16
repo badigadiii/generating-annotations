@@ -67,7 +67,7 @@ retro_helper = RetroGamesHelper(dataset_path / "test", dataset_path / "test.csv"
 captions = retro_helper.get_captions()
 for i in range(len(captions)):
     item = captions.iloc[i]
-    filename = Path(item['file_name'])
+    filename = Path(item['file_name'].replace("\\", "/"))
     caption = item['caption']
     os.makedirs(images_dir / filename.parent, exist_ok=True)
 
@@ -78,5 +78,6 @@ for i in range(len(captions)):
     )
 
     img = generator.generate(caption, num_inference_steps=args.num_inference_steps)
+    print(f"Saved {images_dir / filename}")
     img.save(images_dir / filename)
     break
