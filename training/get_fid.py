@@ -11,7 +11,7 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--real_dir", required=False)
-parser.add_argument("--fake", required=False)
+parser.add_argument("--fake_dir", required=False)
 
 
 args = parser.parse_args()
@@ -56,7 +56,6 @@ def get_fid(real_dir: Path, fake_dir: Path):
 
     return fid.compute()
 
-# Пример использования
 real_dir = config.IMAGES_PATH / "mnk" / "real-validation" if not args.real_dir else args.real_dir
 fake_dir = config.IMAGES_PATH / "mnk" / "256x256" / "sd_trained_unet_epoch_80.pt" if not args.fake_dir else args.fake_dir
 
