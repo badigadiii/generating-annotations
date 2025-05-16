@@ -63,6 +63,12 @@ dataset_path = Path(args.dataset_path)
 
 os.makedirs(images_dir, exist_ok=True)
 
+generator = CustomStableDiffusion(
+    model_id="runwayml/stable-diffusion-v1-5",
+    unet_path=unet_path,
+    cache_dir=args.cache_dir
+)
+
 retro_helper = RetroGamesHelper(dataset_path / "test", dataset_path / "test.csv")
 captions = retro_helper.get_captions()
 for i in range(len(captions)):
@@ -71,13 +77,7 @@ for i in range(len(captions)):
     caption = item['caption']
     os.makedirs(images_dir / filename.parent, exist_ok=True)
 
-    generator = CustomStableDiffusion(
-        model_id="runwayml/stable-diffusion-v1-5",
-        unet_path=unet_path,
-        cache_dir=args.cache_dir
-    )
 
     img = generator.generate(caption, num_inference_steps=args.num_inference_steps)
     print(f"Saved {images_dir / filename}")
     img.save(images_dir / filename)
-    break
