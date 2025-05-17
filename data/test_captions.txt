@@ -6182,6 +6182,37 @@ E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gam
 E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0488.png	a screenshot from a video game shows a man running through a building
 E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0489.png	a screenshot from a video game shows a man in a white suit walking down a street
 E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0491.png	a screenshot from a video game shows a man walking on a rooftop
+E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0492.png	a screenshot from a video game shows a man with a snake skin on his arm
+E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0493.png	a screenshot from a video game shows a snake in a snake skin
+E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0494.png	a screenshot from a video game shows a man with glasses and a leopard print shirt
+E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0495.png	a screenshot from a video game shows a man with a mustache and glasses
+E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0496.png	a screenshot from a video game shows a man in a suit and a red shirt
+E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0497.png	a screenshot from a video game shows a man in a suit and a red shirt
+E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0498.png	a screenshot from a video game shows a snake in the background
+E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0499.png	a screenshot from a video game shows a man in a suit and tie
+E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0500.png	a screenshot from a video game shows a man with a snake skin
+E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0502.png	a screenshot from a video game shows a man in a suit and a woman in a dress
+E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0503.png	a screenshot from a video game shows a man in a suit and tie
+E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0504.png	a screenshot from a video game shows a man with a knife in his hand
+E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0505.png	a screenshot from a video game shows a man in a suit
+E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0506.png	a screenshot from a video game shows a man in a suit and a woman in a dress
+E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0507.png	a screenshot from a video game shows two men in a room
+E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0508.png	a screenshot from a video game shows a man in a suit and a woman in a white coat
+E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0509.png	a screenshot from a video game shows a man with a knife in his hand
+E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0510.png	a screenshot from a video game shows a man in a suit
+E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0511.png	a screenshot from a video game shows a man in a suit
+E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0512.png	a screenshot from a video game shows a man in a suit
+E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0513.png	a screenshot from a video game shows a man in a suit and a woman in a dress
+E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0514.png	a screenshot from a video game shows a man in a suit
+E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0515.png	a screenshot from a video game shows a man with a knife in his hand
+E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0516.png	a screenshot from a video game shows a man with a gun
+E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0517.png	a screenshot from a video game shows a man with a face painted in black
+E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0518.png	a screenshot from a video game shows two men in suits
+E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0519.png	a screenshot from a video game shows two men in suits
+E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0520.png	a screenshot from a video game shows two men in suits
+E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0521.png	a screenshot from a video game shows two men walking in the street
+E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0522.png	a screenshot from a video game shows a man with a knife in his hand
+E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0523.png	a screenshot from a video game shows a man in a suit
 E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0524.png	a screenshot from a video game shows a man in a kimono suit
 E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0525.png	a screenshot from a video game shows two men in a room
 E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0527.png	a screenshot from a video game shows a man with his eyes closed
@@ -6483,34 +6514,3 @@ E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gam
 E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0867.png	a screenshot from a video game shows a man walking down the street
 E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0868.png	a screenshot from a video game shows a man in a red shirt and a woman in a red shirt
 E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0869.png	a screenshot from a video game shows a man walking down the street
-E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0503.png	a screenshot from a video game shows a man in a suit and tie
-E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0522.png	a screenshot from a video game shows a man with a knife in his hand
-E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0521.png	a screenshot from a video game shows two men walking in the street
-E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0502.png	a screenshot from a video game shows a man in a suit and a woman in a dress
-E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0500.png	a screenshot from a video game shows a man with a snake skin
-E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0493.png	a screenshot from a video game shows a snake in a snake skin
-E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0494.png	a screenshot from a video game shows a man with glasses and a leopard print shirt
-E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0523.png	a screenshot from a video game shows a man in a suit
-E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0496.png	a screenshot from a video game shows a man in a suit and a red shirt
-E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0492.png	a screenshot from a video game shows a man with a snake skin on his arm
-E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0507.png	a screenshot from a video game shows two men in a room
-E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0508.png	a screenshot from a video game shows a man in a suit and a woman in a white coat
-E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0516.png	a screenshot from a video game shows a man with a gun
-E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0511.png	a screenshot from a video game shows a man in a suit
-E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0509.png	a screenshot from a video game shows a man with a knife in his hand
-E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0510.png	a screenshot from a video game shows a man in a suit
-E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0518.png	a screenshot from a video game shows two men in suits
-E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0517.png	a screenshot from a video game shows a man with a face painted in black
-E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0520.png	a screenshot from a video game shows two men in suits
-E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0512.png	a screenshot from a video game shows a man in a suit
-E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0515.png	a screenshot from a video game shows a man with a knife in his hand
-E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0513.png	a screenshot from a video game shows a man in a suit and a woman in a dress
-E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0499.png	a screenshot from a video game shows a man in a suit and tie
-E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0505.png	a screenshot from a video game shows a man in a suit
-E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0504.png	a screenshot from a video game shows a man with a knife in his hand
-E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0519.png	a screenshot from a video game shows two men in suits
-E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0498.png	a screenshot from a video game shows a snake in the background
-E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0495.png	a screenshot from a video game shows a man with a mustache and glasses
-E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0497.png	a screenshot from a video game shows a man in a suit and a red shirt
-E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0506.png	a screenshot from a video game shows a man in a suit and a woman in a dress
-E:\PythonProjects\Scraping Dataset\generating-annotations\images\retro-games-gameplay-frames\test\Yakuza 3\frame_0514.png	a screenshot from a video game shows a man in a suit
