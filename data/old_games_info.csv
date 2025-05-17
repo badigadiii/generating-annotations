@@ -1,0 +1,65 @@
+title,genres,split,frames_count
+Assassin's Creed,"Role-playing (RPG), Adventure",train,327
+Assassin's Creed II,"Platform, Adventure",train,779
+Batman: Arkham Asylum,"Hack and slash/Beat 'em up, Adventure",train,296
+BioShock,"Shooter, Hack and slash/Beat 'em up, Adventure",train,141
+Burnout 3: Takedown,Racing,train,631
+Call of Duty 4: Modern Warfare,"Shooter, Simulator",train,547
+Company of Heroes,"Real Time Strategy (RTS), Strategy",train,89
+Crysis,"Shooter, Adventure",train,417
+Dead Space,"Shooter, Adventure",train,193
+Deus Ex: Invisible War,"Shooter, Role-playing (RPG)",train,298
+Devil May Cry 2,"Hack and slash/Beat 'em up, Adventure",train,83
+Devil May Cry 3: Dante's Awakening,"Shooter, Hack and slash/Beat 'em up, Adventure",train,193
+Devil May Cry 4,"Hack and slash/Beat 'em up, Adventure",train,630
+Dragon Age: Origins,Role-playing (RPG),train,557
+Final Fantasy X HD Remaster,"Role-playing (RPG), Adventure",train,321
+God of War,"Role-playing (RPG), Hack and slash/Beat 'em up, Adventure",train,145
+Grand Theft Auto: San Andreas,"Shooter, Racing, Adventure",train,570
+Grand Theft Auto: Vice City,"Racing, Hack and slash/Beat 'em up, Adventure, Arcade",train,548
+Guild Wars,"Role-playing (RPG), Strategy, Adventure",train,140
+Half-Life,Shooter,train,92
+Half-Life 2,Shooter,train,632
+Halo: Combat Evolved,Shooter,train,378
+Hitman: Blood Money,Shooter,train,283
+Lineage II,"Role-playing (RPG), Adventure",train,188
+Mass Effect,Role-playing (RPG),train,394
+Metal Gear Solid 3: Snake Eater,"Shooter, Tactical, Adventure",train,192
+Metal Gear Solid 4: Guns of the Patriots,"Shooter, Tactical, Adventure",train,457
+Mortal Kombat,Fighting,train,646
+Need for Speed: Carbon,Racing,train,370
+Need for Speed: Most Wanted,Racing,train,609
+Need for Speed: Underground,Racing,train,282
+Portal,"Shooter, Platform, Puzzle",train,407
+Prince of Persia: The Sands of Time,"Platform, Puzzle, Adventure",train,211
+Prince of Persia: Warrior Within,Adventure,train,83
+Quake,Shooter,train,296
+Quake II,Shooter,train,200
+Resident Evil 4,"Shooter, Adventure",train,155
+Rome: Total War,"Real Time Strategy (RTS), Role-playing (RPG), Strategy, Turn-based strategy (TBS)",train,639
+Sid Meier's Civilization V,"Simulator, Strategy, Turn-based strategy (TBS)",train,496
+Silent Hill 2,Adventure,train,85
+Star Wars: Knights of the Old Republic,"Role-playing (RPG), Adventure",train,279
+System Shock 2,"Shooter, Puzzle, Role-playing (RPG)",train,103
+The Elder Scrolls III: Morrowind,"Role-playing (RPG), Adventure",train,160
+The Elder Scrolls IV: Oblivion,"Role-playing (RPG), Adventure",train,413
+The Witcher,"Role-playing (RPG), Adventure",train,343
+Thief II: The Metal Age,"Shooter, Simulator, Adventure",train,32
+Thief: The Dark Project,"Simulator, Adventure",train,36
+Tom Clancy's Splinter Cell: Chaos Theory,Arcade,train,157
+Tomb Raider II,"Shooter, Platform, Puzzle, Adventure",train,307
+Tomb Raider: Anniversary,"Shooter, Platform, Simulator, Strategy, Adventure",train,149
+Uncharted: Drake's Fortune,"Shooter, Platform, Adventure",train,287
+Warcraft III: Reign of Chaos,"Real Time Strategy (RTS), Strategy",train,396
+World of Warcraft,"Role-playing (RPG), Adventure",train,166
+Bayonetta,"Hack and slash/Beat 'em up, Adventure",test,630
+Call of Juarez: Bound In Blood,"Shooter, Adventure",test,681
+Demon's Souls,"Role-playing (RPG), Adventure",test,392
+F.E.A.R.,"Simulator, Adventure, Indie",test,563
+Kingdom Hearts II Final Mix,"Shooter, Platform, Role-playing (RPG), Hack and slash/Beat 'em up, Adventure",test,849
+Ninja Gaiden Black,"Hack and slash/Beat 'em up, Adventure",test,745
+Prototype,"Indie, Visual Novel",test,378
+The Lord of the Rings: War in the North,"Role-playing (RPG), Strategy, Hack and slash/Beat 'em up, Adventure",test,435
+The Saboteur,"Fighting, Platform",test,702
+Trine,"Platform, Puzzle, Adventure, Indie",test,361
+Yakuza 3,"Role-playing (RPG), Hack and slash/Beat 'em up, Adventure",test,780
