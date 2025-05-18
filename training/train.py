@@ -12,8 +12,6 @@ parser.add_argument("--batch_size", "-b", type=int, required=False)
 parser.add_argument("--num_epochs", "-n", type=int, required=False)
 parser.add_argument("--checkpoint_frequency", "-freq", type=int, required=False)
 parser.add_argument("--learning_rate", "-lr", type=float, required=False)
-parser.add_argument("--k_folds", type=int, required=False)
-parser.add_argument("--fold_index", type=int, required=False)
 
 
 args = parser.parse_args()
@@ -79,17 +77,11 @@ fold_index = 0 if not args.fold_index else args.fold_index
 
 # --------------- Dataloader ---------------
 class CustomDataset(Dataset):
-    def __init__(self, dataset_path: Path, dataset_split: str = "train", fold_index: int = None, k_folds: int = None, transform=None):
+    def __init__(self, dataset_path: Path, dataset_split: str = "train", transform=None):
         self.dataset_path = Path(dataset_path)
         dataset = load_dataset(str(dataset_path))
         self.dataset = dataset[dataset_split]
         self.retro_helper = RetroGamesHelper(dataset_path / dataset_split, dataset_path / f"{dataset_split}.csv")
-        self.validation_dataset: pd.core.frame.DataFrame = None
-
-        if fold_index is not None and k_folds is not None:
-            train, val = self.retro_helper.get_fold(fold_index, k_folds)
-            self.dataset = train
-            self.validation_dataset = val
 
         self.transform = transform
 
@@ -119,10 +111,7 @@ transform = transforms.Compose([
     transforms.Normalize([0.5], [0.5]),
 ])
 
-dataset = CustomDataset(dataset_path=dataset_path, dataset_split=dataset_split, k_folds=k_folds, fold_index=fold_index, transform=transform)
-
-if dataset.validation_dataset is not None:
-    dataset.validation_dataset.to_csv(checkpoint_dir / "validation.csv", index=False)
+dataset = CustomDataset(dataset_path=dataset_path, dataset_split=dataset_split, transform=transform)
 
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
