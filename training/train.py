@@ -89,11 +89,7 @@ class CustomDataset(Dataset):
         return len(self.dataset)
 
     def __getitem__(self, idx):
-
-        if isinstance(self.dataset, pd.core.frame.DataFrame):
-            screenshot = self.dataset.iloc[idx]
-        else:
-            screenshot = self.dataset[idx]
+        screenshot = self.dataset[idx]
         filepath = self.dataset_path / screenshot["file_name"].replace("\\", "/")
         prompt = screenshot["caption"]
 
