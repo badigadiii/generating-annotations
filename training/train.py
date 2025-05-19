@@ -4,7 +4,8 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("--dataset_path", "-data", required=False, help="Dataset directory")
 parser.add_argument("--dataset_split", "-split", required=False, help="Split from dataset {train, test}")
-parser.add_argument("--checkpoint_dir", "-c", required=False)
+parser.add_argument("--dataset_config", required=False, help="Dataset config: default, fold_1, ..., fold_5")
+parser.add_argument("--checkpoints_dir", "-c", required=False)
 parser.add_argument("--log_file", "-log", required=False, help="Path to training log file")
 parser.add_argument("--unet_weights", "-w", type=int, required=False, help="File with unet weights")
 parser.add_argument("--model_cache", "-m", required=False, help="Path to pretrained model cache")
@@ -55,18 +56,19 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 logger.info("Логгер инициализирован.")
+logger.info(args)
 
 
 # --------------- Settings ---------------
 dataset_path = Path("./dataset") if not args.dataset_path else args.dataset_path
 dataset_split = "train" if not args.dataset_split else args.dataset_split
-checkpoint_dir = config.CHECKPOINTS_PATH if not args.checkpoint_dir else args.checkpoint_dir
+dataset_config = "default" if not args.dataset_config else args.dataset_config
+checkpoints_dir = config.CHECKPOINTS_PATH if not args.checkpoints_dir else args.checkpoints_dir
 cache_dir = "./models" if not args.model_cache else args.model_cache
 
 dataset_path = Path(dataset_path)
-checkpoint_dir = Path(checkpoint_dir)
-
-checkpoint_dir.mkdir(exist_ok=True)
+checkpoints_dir = Path(checkpoints_dir)
+checkpoints_dir.mkdir(exist_ok=True, parents=True)
 
 batch_size = 1 if not args.batch_size else args.batch_size
 learning_rate = 5e-6 if not args.learning_rate else args.learning_rate
@@ -75,11 +77,10 @@ checkpoint_frequency = 2 if not args.checkpoint_frequency else args.checkpoint_f
 
 # --------------- Dataloader ---------------
 class CustomDataset(Dataset):
-    def __init__(self, dataset_path: Path, dataset_split: str = "train", transform=None):
+    def __init__(self, dataset_path: Path, dataset_split: str, dataset_config: str, transform=None):
         self.dataset_path = Path(dataset_path)
-        dataset = load_dataset(str(dataset_path))
+        dataset = load_dataset(str(dataset_path), dataset_config)
         self.dataset = dataset[dataset_split]
-        self.retro_helper = RetroGamesHelper(dataset_path / dataset_split, dataset_path / f"{dataset_split}.csv")
 
         self.transform = transform
 
@@ -88,7 +89,7 @@ class CustomDataset(Dataset):
 
     def __getitem__(self, idx):
         screenshot = self.dataset[idx]
-        filepath = self.dataset_path / screenshot["file_name"].replace("\\", "/")
+        filepath = self.dataset_path / screenshot["file_name"]
         prompt = screenshot["caption"]
 
         image = Image.open(filepath).convert("RGB")
@@ -105,8 +106,7 @@ transform = transforms.Compose([
     transforms.Normalize([0.5], [0.5]),
 ])
 
-dataset = CustomDataset(dataset_path=dataset_path, dataset_split=dataset_split, transform=transform)
-
+dataset = CustomDataset(dataset_path=dataset_path, dataset_split=dataset_split, dataset_config=dataset_config, transform=transform)
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
 # --------------- Training ---------------
@@ -133,8 +133,6 @@ text_encoder.to(device)
 optimizer = torch.optim.AdamW(unet.parameters(), lr=learning_rate)
 
 # Процесс обучения
-loss_log = []
-
 for epoch in range(1, num_epochs + 1):
     epoch_losses = []
     progress_bar = tqdm(dataloader, desc=f"Epoch {epoch}/{num_epochs}", leave=False)
@@ -178,28 +176,23 @@ for epoch in range(1, num_epochs + 1):
         progress_bar.set_postfix({"Loss": loss.item()})
 
     avg_loss = sum(epoch_losses) / len(epoch_losses)
-    loss_log.append({"epoch": epoch, "avg_loss": avg_loss})
     print(f"Epoch {epoch}/{num_epochs} | Average Loss: {avg_loss:.6f}")
     logger.info(f"Epoch {epoch}/{num_epochs} | Average Loss: {avg_loss:.6f}")
 
-
     # Сохранение чекпоинта по частоте
     if epoch % checkpoint_frequency == 0:
-        checkpoint_path = checkpoint_dir / f"unet_epoch_{epoch}.pt"
+        checkpoint_path = checkpoints_dir / f"unet_epoch_{epoch}.pt"
         torch.save(unet.state_dict(), checkpoint_path)
         print(f"Чекпоинт сохранен: {checkpoint_path}")
         logger.info(f"Чекпоинт сохранен: {checkpoint_path}")
 
 
 # Сохранение финальной модели
-final_model_path = checkpoint_dir / "unet_final.pt"
+final_model_path = checkpoints_dir / "unet_final.pt"
 torch.save(unet.state_dict(), final_model_path)
 print(f"Финальная модель сохранена: {final_model_path}")
 logger.info(f"Финальная модель сохранена: {final_model_path}")
 
 
-# Сохранение логов в CSV для последующего анализа
-df_log = pd.DataFrame(loss_log)
-df_log.to_csv(log_file, index=False)
-print(f"Логи обучения сохранены в: {log_file}")
+# Сохранение логов для последующего анализа
 logger.info(f"Логи обучения сохранены в: {log_file}")
