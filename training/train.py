@@ -60,7 +60,7 @@ logger.info("Логгер инициализирован.")
 # --------------- Settings ---------------
 dataset_path = Path("./dataset") if not args.dataset_path else args.dataset_path
 dataset_split = "train" if not args.dataset_split else args.dataset_split
-checkpoint_dir = Path("./checkpoints") if not args.checkpoint_dir else args.checkpoint_dir
+checkpoint_dir = config.CHECKPOINTS_PATH if not args.checkpoint_dir else args.checkpoint_dir
 cache_dir = "./models" if not args.model_cache else args.model_cache
 
 dataset_path = Path(dataset_path)
