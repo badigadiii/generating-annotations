@@ -72,8 +72,6 @@ batch_size = 1 if not args.batch_size else args.batch_size
 learning_rate = 5e-6 if not args.learning_rate else args.learning_rate
 num_epochs = 5 if not args.num_epochs else args.num_epochs
 checkpoint_frequency = 2 if not args.checkpoint_frequency else args.checkpoint_frequency
-k_folds = 5 if not args.k_folds else args.k_folds
-fold_index = 0 if not args.fold_index else args.fold_index
 
 # --------------- Dataloader ---------------
 class CustomDataset(Dataset):
