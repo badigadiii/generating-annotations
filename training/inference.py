@@ -23,6 +23,7 @@ from PIL import Image
 from pathlib import Path
 import pandas as pd
 from datasets import load_dataset
+from tqdm import tqdm
 
 from config_file import config
 
@@ -89,19 +90,32 @@ captions = d[dataset_split]
 file_names = captions["file_name"]
 prompts = captions["caption"]
 
-for i in range(0, len(prompts), batch_size):
-    batch_prompts = prompts[i:i + batch_size]
-    batch_filenames = file_names[i:i + batch_size]
+for i in tqdm(range(0, len(prompts), batch_size), desc="Generating"):
 
-    images = generator.generate(
-        prompts=batch_prompts,
-        num_inference_steps=num_inference_steps,
-        guidance_scale=guidance_scale,
-        height=image_size,
-        width=image_size,
-    )
+    batch_captions = captions[i:i + batch_size]
+    fnames = batch_captions["file_name"]
+    prompts = batch_captions["caption"]
 
-    for img, fname in zip(images, batch_filenames):
+    batch_prompts = [] # prompts[i:i + batch_size]
+    batch_filenames = [] # file_names[i:i + batch_size]
+
+    for fname, prompt in zip(fnames, prompts):
         img_path = Path(output_dir) / Path(fname)
-        img_path.parent.mkdir(parents=True, exist_ok=True)
-        img.save(img_path)
+
+        if not img_path.exists():
+            batch_prompts.append(prompt)
+            batch_filenames.append(fname)
+
+    if batch_prompts:
+        images = generator.generate(
+            prompts=batch_prompts,
+            num_inference_steps=num_inference_steps,
+            guidance_scale=guidance_scale,
+            height=image_size,
+            width=image_size,
+        )
+
+        for img, fname in zip(images, batch_filenames):
+            img_path = Path(output_dir) / Path(fname)
+            img_path.parent.mkdir(parents=True, exist_ok=True)
+            img.save(img_path)
