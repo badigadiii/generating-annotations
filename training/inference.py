@@ -1,25 +1,30 @@
-import os
-import torch
-from diffusers import StableDiffusionPipeline, DDIMScheduler, UNet2DConditionModel
-from PIL import Image
-from pathlib import Path
-
-from config_file import config
-from dataset import RetroGamesHelper
-
-
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--unet_path", required=True)
-parser.add_argument("--images_dir", required=True)
+parser.add_argument("--model_cache", "-m", required=True, help="Path to pretrained model cache")
+parser.add_argument("--unet_path", required=True, help="Path to trained unet weights")
 parser.add_argument("--dataset_path", required=True)
-parser.add_argument("--cache_dir", required=True)
+parser.add_argument("--dataset_config", required=True, default="default", help="Dataset config {default, fold_1, ..., fold_5}")
+parser.add_argument("--dataset_split", required=True, help="Dataset split {train, test, validation}")
+parser.add_argument("--output_dir", required=True, help="Output dir to store generated images")
+parser.add_argument("--image_size", type=int, default=128, required=False)
+parser.add_argument("--batch_size", required=True, type=int, help="Batch size of prompts")
 parser.add_argument("--num_inference_steps", "-n", type=int, default=2, required=False)
 parser.add_argument("--guidance_scale", "-g", type=float, default=7.5, required=False)
 
 
 args = parser.parse_args()
+
+
+import os
+import torch
+from diffusers import StableDiffusionPipeline, DDIMScheduler, UNet2DConditionModel
+from PIL import Image
+from pathlib import Path
+import pandas as pd
+from datasets import load_dataset
+
+from config_file import config
 
 
 class CustomStableDiffusion:
@@ -45,39 +50,58 @@ class CustomStableDiffusion:
             unet.to(self.device)
             self.pipe.unet = unet
 
-    def generate(self, prompt, height=256, width=256, num_inference_steps=50, guidance_scale=7.5):
+    def generate(self, prompts: list[str], height=256, width=256, num_inference_steps=50, guidance_scale=7.5):
         with torch.autocast(self.device) if self.device == "cuda" else torch.no_grad():
-            image = self.pipe(
-                prompt,
+            images = self.pipe(
+                prompt=prompts,
                 height=height,
                 width=width,
                 num_inference_steps=num_inference_steps,
                 guidance_scale=guidance_scale
-            ).images[0]
-            return image
+            ).images
+            return images
 
 
-unet_path = Path(args.unet_path)
-images_dir = Path(args.images_dir)
-dataset_path = Path(args.dataset_path)
+model_cache = args.model_cache
+unet_path = args.unet_path
+dataset_path = args.dataset_path
+dataset_config = args.dataset_config
+dataset_split = args.dataset_split
+output_dir = args.output_dir
+image_size = args.image_size
 
-os.makedirs(images_dir, exist_ok=True)
+batch_size = args.batch_size
+num_inference_steps = args.num_inference_steps
+guidance_scale = args.guidance_scale
+
+os.makedirs(output_dir, exist_ok=True)
+
 
 generator = CustomStableDiffusion(
     model_id="runwayml/stable-diffusion-v1-5",
+    cache_dir=model_cache,
     unet_path=unet_path,
-    cache_dir=args.cache_dir
 )
 
-retro_helper = RetroGamesHelper(dataset_path / "test", dataset_path / "test.csv")
-captions = retro_helper.get_captions()
-for i in range(len(captions)):
-    item = captions.iloc[i]
-    filename = Path(item['file_name'].replace("\\", "/"))
-    caption = item['caption']
-    os.makedirs(images_dir / filename.parent, exist_ok=True)
+d = load_dataset(dataset_path, dataset_config)
+captions = d[dataset_split]
 
+file_names = captions["file_name"]
+prompts = captions["caption"]
 
-    img = generator.generate(caption, num_inference_steps=args.num_inference_steps)
-    print(f"Saved {images_dir / filename}")
-    img.save(images_dir / filename)
+for i in range(0, len(prompts), batch_size):
+    batch_prompts = prompts[i:i + batch_size]
+    batch_filenames = file_names[i:i + batch_size]
+
+    images = generator.generate(
+        prompts=batch_prompts,
+        num_inference_steps=num_inference_steps,
+        guidance_scale=guidance_scale,
+        height=image_size,
+        width=image_size,
+    )
+
+    for img, fname in zip(images, batch_filenames):
+        img_path = Path(output_dir) / Path(fname)
+        img_path.parent.mkdir(parents=True, exist_ok=True)
+        img.save(img_path)
