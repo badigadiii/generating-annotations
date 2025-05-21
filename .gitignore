@@ -9,6 +9,7 @@ logs
 models
 datasets
 checkpoints
+generated_images
 images/*
 videos/*
 logs/*
