@@ -2,6 +2,7 @@ import pandas as pd
 import subprocess
 import os
 import logging
+import datetime
 from config_file import config
 from pathlib import Path
 
@@ -15,8 +16,10 @@ parser.add_argument("-s", "--start", required=False, default="00:10:00", help="S
 
 args = parser.parse_args()
 
+date = datetime.datetime.now()
+string_date = date.strftime("%y-%m-%d %H-%M")
 
-log_file = config.LOGS_PATH / "download.log"
+log_file = config.LOGS_PATH / f"{string_date} download.log"
 log_file.parent.mkdir(parents=True, exist_ok=True)
 logging.basicConfig(
     level=logging.INFO,
@@ -30,6 +33,7 @@ logging.basicConfig(
 input_file = config.DATA_PATH / "videos.csv" if not args.input else args.input
 output_folder = config.VIDEOS_FOLDER if not args.output else args.output
 output_folder = Path(output_folder)
+output_folder.mkdir(parents=True, exist_ok=True)
 start = "00:10:00" if not args.start else args.start
 duration = "3600" if not args.duration else args.duration
 
