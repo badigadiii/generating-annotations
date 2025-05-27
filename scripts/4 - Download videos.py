@@ -17,7 +17,7 @@ parser.add_argument("-s", "--start", required=False, default="00:10:00", help="S
 args = parser.parse_args()
 
 date = datetime.datetime.now()
-string_date = date.strftime("%y-%m-%d %H-%M")
+string_date = date.strftime("%y-%m-%d")
 
 log_file = config.LOGS_PATH / f"{string_date} download.log"
 log_file.parent.mkdir(parents=True, exist_ok=True)
@@ -56,8 +56,8 @@ for i, row in videos_to_download.iterrows():
     game = row["game"]
     url = row["url"]
     
-    print(f"📥 Скачиваем: {game} — {url}")
-    logging.info(f"📥 Скачиваем: {game} — {url}")
+    print(f"📥 Скачиваем [{i+1}/{len(df)}] {game} — {url}")
+    logging.info(f"📥 Скачиваем [{i+1}/{len(df)}] {game} — {url}")
 
     command = [
         "yt-dlp",
